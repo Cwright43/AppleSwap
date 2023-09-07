@@ -43,6 +43,8 @@ async function main() {
   // Distribute Tokens to Investors
   //
 
+  /*
+
   let transaction
 
   // Send dapp tokens to investor 1
@@ -61,6 +63,7 @@ async function main() {
   transaction = await usd.connect(deployer).transfer(investor4.address, tokens(10))
   await transaction.wait()
 
+  */
 
   /////////////////////////////////////////////////////////////
   // Adding Liquidity
@@ -68,11 +71,17 @@ async function main() {
 
   let amount = tokens(100)
 
-  console.log(`Fetching AMM...\n`)
+  console.log(`Fetching AppleSwap...\n`)
 
   // Fetch AMM
   const amm = await ethers.getContractAt('AMM', config[chainId].amm.address)
-  console.log(`AMM fetched: ${amm.address}\n`)
+  console.log(`AppleSwap fetched: ${amm.address}\n`)
+
+  // Fetch AppleSwap
+  const amm2 = await ethers.getContractAt('AMM', config[chainId].amm2.address)
+  console.log(`AppleSwap fetched: ${amm2.address}\n`)
+
+  // Add liquidity to AMM Swap
 
   transaction = await dapp.connect(deployer).approve(amm.address, amount)
   await transaction.wait()
@@ -84,6 +93,22 @@ async function main() {
   console.log(`Adding liquidity...\n`)
   transaction = await amm.connect(deployer).addLiquidity(amount, amount)
   await transaction.wait()
+
+  // Add liquidity to AppleSwap
+
+  transaction = await dapp.connect(deployer).approve(amm2.address, amount)
+  await transaction.wait()
+
+  transaction = await usd.connect(deployer).approve(amm2.address, amount)
+  await transaction.wait()
+
+  // Deployer adds liquidity
+  console.log(`Adding liquidity...\n`)
+  transaction = await amm2.connect(deployer).addLiquidity(amount, amount)
+  await transaction.wait()
+
+
+  /* 
 
   /////////////////////////////////////////////////////////////
   // Investor 1 Swaps: Dapp --> USD
@@ -142,6 +167,8 @@ async function main() {
   await transaction.wait()
 
   console.log(`Finished.\n`)
+
+  */
 
 }
 

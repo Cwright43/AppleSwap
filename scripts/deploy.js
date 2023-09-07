@@ -9,6 +9,8 @@ const hre = require("hardhat");
 async function main() {
   const Token = await hre.ethers.getContractFactory('Token')
 
+  /*
+
   // Deploy Token 1
   let dapp = await Token.deploy('Dapp Token', 'DAPP', '1000000') // 1 million tokens
   await dapp.deployed()
@@ -19,11 +21,16 @@ async function main() {
   await usd.deployed()
   console.log(`USD Token deployed to: ${usd.address}\n`)
 
-  // Deploy AMM
-  const AMM = await hre.ethers.getContractFactory('AMM')
-  const amm = await AMM.deploy(dapp.address, usd.address)
+  */
 
-  console.log(`AMM contract deployed to: ${amm.address}\n`)
+  const dapp = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+  const usd = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+
+  // Deploy AMM
+  const AMM2 = await hre.ethers.getContractFactory('AMM')
+  const amm2 = await AMM2.deploy(dapp, usd)
+
+  console.log(`AppleSwap contract deployed to: ${amm2.address}\n`)
 
 }
 

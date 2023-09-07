@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { HashRouter, Routes, Route } from 'react-router-dom'
 import { Container } from 'react-bootstrap'
 import { ethers } from 'ethers'
@@ -25,6 +25,9 @@ function App() {
   const [token1Balance, setToken1Balance] = useState(0)
   const [token2Balance, setToken2Balance] = useState(0)
   const [amm, setAMM] = useState(0)
+
+  const token1 = useSelector(state => state.amm.token1)
+  const token2 = useSelector(state => state.amm.token2)
 
   const dispatch = useDispatch()
 
@@ -57,14 +60,22 @@ function App() {
   }, []);
 
   return(
-    <Container>
+
+    
+    <Container >
+    
+
       <HashRouter>
 
-        <Navigation />
+
+    <style>{'body { background-color: red; }'}</style>
+
+        <Navigation  />
 
         <hr />
 
-
+        <h5 className='my-4 text-left text-warning'>Total DAPP in Liquidity: <strong>{parseFloat(token1).toFixed(2)}</strong> tokens</h5>
+        <h5 className='my-4 text-left text-warning'>Total USD in Liquidity: <strong>{parseFloat(token2).toFixed(2)}</strong> tokens</h5>
 
         <Tabs />
 
@@ -74,9 +85,6 @@ function App() {
           <Route path="/withdraw" element={<Withdraw />} />
           <Route path="/charts" element={<Charts />} />
         </Routes>
-
-        <h6 className='my-4 text-left'>Total DAPP in Liquidity: </h6>
-        <h6 className='my-4 text-left'>Total USD in Liquidity: </h6>
 
       </HashRouter>
     </Container>
