@@ -32,20 +32,23 @@ const Navigation = () => {
   }
 
   return (
+
     <Navbar className='my-3' expand="lg">
       <img
         alt="logo"
         src={apple}
-        width="40"
-        height="40"
-        className="d-inline-block align-top mx-3"
-      />
-      <Navbar.Brand href="#" className='text-warning'>Apple Swap AMM</Navbar.Brand>
+        width="60"
+        height="60"
+        className="d-inline-block align-top align-middle mx-3 centerText"
+        style={{textAlign: "center"}}
 
+      />
+      
+      <Navbar.Brand href="#" className="text-warning"><strong>Apple Swap AMM</strong></Navbar.Brand>
       <Navbar.Toggle aria-controls="nav" />
       <Navbar.Collapse id="nav" className="justify-content-end">
 
-        <div className="d-flex justify-content-end mt-3">
+        <div className="d-flex justify-content-end mt-6">
 
           <Form.Select
             aria-label="Network Selector"

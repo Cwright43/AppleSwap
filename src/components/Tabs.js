@@ -5,16 +5,16 @@ const Tabs = () => {
   return (
     <Nav variant="pills" defaultActiveKey="/" className='justify-content-center my-4'>
       <LinkContainer to="/">
-        <Nav.Link>Swap</Nav.Link>
+        <Nav.Link className='text-warning'>Swap</Nav.Link>
       </LinkContainer>
       <LinkContainer to="/deposit">
-        <Nav.Link>Deposit</Nav.Link>
+        <Nav.Link className='text-warning'>Deposit</Nav.Link>
       </LinkContainer>
       <LinkContainer to="/withdraw">
-        <Nav.Link>Withdraw</Nav.Link>
+        <Nav.Link className='text-warning'>Withdraw</Nav.Link>
       </LinkContainer>
       <LinkContainer to="/charts">
-        <Nav.Link>Charts</Nav.Link>
+        <Nav.Link className='text-warning'>Charts</Nav.Link>
       </LinkContainer>
     </Nav>
   );
