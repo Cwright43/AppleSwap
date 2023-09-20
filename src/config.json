@@ -1,13 +1,32 @@
 {
   "31337": {
     "dapp": {
-      "address": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788"
+      "address": "0xbFD3c8A956AFB7a9754C951D03C9aDdA7EC5d638"
     },
     "usd": {
-      "address": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e"
+      "address": "0x38F6F2caE52217101D7CA2a5eC040014b4164E6C"
     },
     "amm": {
-      "address": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
+      "address": "0x837a41023CF81234f89F956C94D676918b4791c1"
+    },
+    "dappswap": {
+      "address": "0xc075BC0f734EFE6ceD866324fc2A9DBe1065CBB1"
+    }
+  },
+
+  "1": {
+    "dapp": {
+      "address": "0xc075BC0f734EFE6ceD866324fc2A9DBe1065CBB1"
+    },
+    "usd": {
+      "address": "0x837a41023CF81234f89F956C94D676918b4791c1"
+    },
+    "amm": {
+      "address": "0xcB0f2a13098f8e841e6Adfa5B17Ec00508b27665"
+    },
+    "dappswap": {
+      "address": "0xd9abC93F81394Bd161a1b24B03518e0a570bDEAd"
     }
   }
+
 }
