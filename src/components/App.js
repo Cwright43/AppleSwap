@@ -74,8 +74,8 @@ function App() {
 
         <hr />
 
-        <h5 className='my-4 text-left text-warning'>Total DAPP in Liquidity: <strong>{parseFloat(token1).toFixed(2)}</strong> tokens</h5>
-        <h5 className='my-4 text-left text-warning'>Total USD in Liquidity: <strong>{parseFloat(token2).toFixed(2)}</strong> tokens</h5>
+        <h5 className='my-4 text-left text-warning'>Total DAPP in DAPP / USD Pool: <strong>{parseFloat(token1).toFixed(2)}</strong> tokens</h5>
+        <h5 className='my-4 text-left text-warning'>Total USD in DAPP / USD Pool: <strong>{parseFloat(token2).toFixed(2)}</strong> tokens</h5>
 
         <Tabs />
 
