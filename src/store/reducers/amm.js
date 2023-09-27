@@ -29,15 +29,12 @@ export const amm = createSlice({
     sharesLoaded: (state, action) => {
       state.shares = action.payload
     },
-
     token1Loaded: (state, action) => {
       state.token1 = action.payload
     },
-
     token2Loaded: (state, action) => {
       state.token2 = action.payload
     },
-
     swapsLoaded: (state, action) => {
       state.swaps = action.payload
     },

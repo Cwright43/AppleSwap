@@ -17,6 +17,8 @@ import {
   sharesLoaded,
   token1Loaded,
   token2Loaded,
+  token3Loaded,
+  token4Loaded,
   swapsLoaded,
   depositRequest,
   depositSuccess,
@@ -65,6 +67,14 @@ export const loadTokens = async (provider, chainId, dispatch) => {
   dispatch(setSymbols([await dapp.symbol(), await usd.symbol()]))
 }
 
+export const loadTokens1 = async (provider, chainId, dispatch) => {
+  const apple = new ethers.Contract(config[chainId].apple.address, TOKEN_ABI, provider)
+  const usd = new ethers.Contract(config[chainId].usd.address, TOKEN_ABI, provider)
+
+  dispatch(setContracts([apple, usd]))
+  dispatch(setSymbols([await apple.symbol(), await usd.symbol()]))
+}
+
 export const loadAMM = async (provider, chainId, dispatch) => {
   const amm = new ethers.Contract(config[chainId].amm.address, AMM_ABI, provider)
 
@@ -73,25 +83,33 @@ export const loadAMM = async (provider, chainId, dispatch) => {
   return amm
 }
 
+export const loadAppleAppleUSD = async (provider, chainId, dispatch) => {
+  const appleAppleUSD = new ethers.Contract(config[chainId].appleAppleUSD.address, AMM_ABI, provider)
+
+  dispatch(setContract(appleAppleUSD))
+
+  return appleAppleUSD
+}
+
 
 // ------------------------------------------------------------------------------
 // LOAD BALANCES & SHARES
-export const loadBalances = async (amm, tokens, account, dispatch) => {
-  const balance1 = await tokens[0].balanceOf(account)
-  const balance2 = await tokens[1].balanceOf(account)
+export const loadBalances = async (_amm, _tokens, account, dispatch) => {
+  const balance1 = await _tokens[0].balanceOf(account)
+  const balance2 = await _tokens[1].balanceOf(account)
 
   dispatch(balancesLoaded([
     ethers.utils.formatUnits(balance1.toString(), 'ether'),
     ethers.utils.formatUnits(balance2.toString(), 'ether')
   ]))
 
-  const shares = await amm.shares(account)
+  const shares = await _amm.shares(account)
   dispatch(sharesLoaded(ethers.utils.formatUnits(shares.toString(), 'ether')))
 
-  const token1 = await amm.token1Balance()
+  const token1 = await _amm.token1Balance()
   dispatch(token1Loaded(ethers.utils.formatUnits(token1.toString(), 'ether')))
 
-  const token2 = await amm.token2Balance()
+  const token2 = await _amm.token2Balance()
   dispatch(token2Loaded(ethers.utils.formatUnits(token2.toString(), 'ether')))
 
 }
