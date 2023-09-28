@@ -24,15 +24,11 @@ import {
   loadNetwork,
   loadAccount,
   loadTokens,
-  loadTokens1,
   loadAMM,
-  loadAppleAppleUSD
 } from '../store/interactions'
 
 function App() {
 
-  const token1 = useSelector(state => state.amm.token1)
-  const token2 = useSelector(state => state.amm.token2)
 
   // Set Token Addresses
   const [usd, setUSD] = useState(null)
@@ -43,6 +39,15 @@ function App() {
   const [rate1, setRate1] = useState(null)
   const [rate2, setRate2] = useState(null)
   const [rate3, setRate3] = useState(null)
+
+    // Set Address for DAPP / USD Pool
+    const [amm, setAMM] = useState(null)
+
+    // Set Address for APPL / USD Pool
+    const [appleAppleUSD, setAppleAppleUSD] = useState(null)
+    
+    // Set Address for DAPP / APPL Pool
+    const [appleDappApple, setAppleDappApple] = useState(null)
 
     // Set Balances for DAPP / USD
     const [balance1, setBalance1] = useState(0)
@@ -56,14 +61,12 @@ function App() {
     const [dappBalance, setDappBalance] = useState(0)
     const [appleBalance2, setAppleBalance2] = useState(0)
 
-    // Set Address for DAPP / USD Pool
-    const [amm, setAMM] = useState(null)
+    // Call active token balances dynamically
+    const token1 = useSelector(state => state.amm.token1)
+    const token2 = useSelector(state => state.amm.token2)
 
-    // Set Address for APPL / USD Pool
-    const [appleAppleUSD, setAppleAppleUSD] = useState(null)
-    
-    // Set Address for DAPP / APPL Pool
-    const [appleDappApple, setAppleDappApple] = useState(null)
+    // Set Chain ID for Network
+    const chainId = useSelector(state => state.provider.chainId)
 
   const dispatch = useDispatch()
 
