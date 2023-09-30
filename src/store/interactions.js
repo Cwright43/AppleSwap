@@ -137,7 +137,6 @@ export const loadBalances = async (_amm, _tokens, account, dispatch) => {
 
 }
 
-
 // ------------------------------------------------------------------------------
 // ADD LIQUDITY
 export const addLiquidity = async (provider, amm, tokens, amounts, dispatch) => {
@@ -212,7 +211,6 @@ export const swap = async (provider, amm, token, inputSymbol, outputSymbol, amou
   }
 }
 
-
 // ------------------------------------------------------------------------------
 // LOAD ALL SWAPS
 
@@ -226,4 +224,3 @@ export const loadAllSwaps = async (provider, amm, dispatch) => {
 
   dispatch(swapsLoaded(swaps))
 }
-
