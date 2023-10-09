@@ -25,198 +25,144 @@ import {
 } from '../store/interactions'
 
 const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate1, rate2, rate3 } ) => {
-  const [inputToken, setInputToken] = useState(null)
-  const [outputToken, setOutputToken] = useState(null)
-  const [inputAmount, setInputAmount] = useState(0)
-  const [outputAmount, setOutputAmount] = useState(0)
 
-  const [price, setPrice] = useState(0)
+    // Declare Input/Output Token Features
+      const [inputToken, setInputToken] = useState(null)
+      const [outputToken, setOutputToken] = useState(null)
+      const [inputAmount, setInputAmount] = useState(0)
+      const [outputAmount, setOutputAmount] = useState(0)
+      const [price, setPrice] = useState(0)
+      const [protocol, setProtocol] = useState(0)
+      const [showAlert, setShowAlert] = useState(false)
 
-  const [showAlert, setShowAlert] = useState(false)
+    // Loading Contract Addresses
+      const provider = useSelector(state => state.provider.connection)
+      const account = useSelector(state => state.provider.account)
+      const chainId = useSelector(state => state.provider.chainId)
+      const tokens = useSelector(state => state.tokens.contracts)
 
-  const provider = useSelector(state => state.provider.connection)
-  const account = useSelector(state => state.provider.account)
+    // Declare AMM Variable - Active Contract Address
+      const amm = useSelector(state => state.amm.contract)
+      const isSwapping = useSelector(state => state.amm.swapping.isSwapping)
+      const isSuccess = useSelector(state => state.amm.swapping.isSuccess)
+      const transactionHash = useSelector(state => state.amm.swapping.transactionHash)
 
-  // Set Chain ID for network
-    const chainId = useSelector(state => state.provider.chainId)
-    const tokens = useSelector(state => state.tokens.contracts)
-    const symbols = useSelector(state => state.tokens.symbols)
-    const balances = useSelector(state => state.tokens.balances)
+    // Declare Dyanmic Token Balances
+      const token1 = useSelector(state => state.amm.token1)
+      const token2 = useSelector(state => state.amm.token2)
 
-    const amm = useSelector(state => state.amm.contract)
-    const isSwapping = useSelector(state => state.amm.swapping.isSwapping)
-    const isSuccess = useSelector(state => state.amm.swapping.isSuccess)
-    const transactionHash = useSelector(state => state.amm.swapping.transactionHash)
-
-    const token1 = useSelector(state => state.amm.token1)
-    const token2 = useSelector(state => state.amm.token2)
-
-    const dispatch = useDispatch()
+      const dispatch = useDispatch()
 
   const inputHandler = async (e) => {
-    if (!inputToken || !outputToken) {
-      window.alert('Please select token')
-      return
-    }
 
-    if (inputToken === outputToken) {
-      window.alert('Invalid token pair')
-      return
-    }
-
-    if (e.target.value == 0) {
-      setPrice(0)
-      setOutputAmount(0)
-      return
-    }
-
-    // Handle for (1) - DAPP / USD Pair
-    if ((inputToken === 'DAPP' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'DAPP')) {
-      console.log(`DAPP / USD Activated`)
-      await loadBalances(amm, tokens, account, dispatch)
-      console.log(`${await amm.token1Balance()} & ${await amm.token2Balance()}`)
-        if (inputToken === 'DAPP') {
-          setInputAmount(e.target.value)
-          const _token1Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-          const result = await amm.calculateToken1Swap(_token1Amount)
-          const _token2Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-          setOutputAmount(_token2Amount.toString())
-         } else {
-          setInputAmount(e.target.value)
-          const _token2Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-          const result = await amm.calculateToken2Swap(_token2Amount)
-          const _token1Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-          setOutputAmount(_token1Amount.toString())
-          }
-        }
+      if (e.target.value == 0) {
+        setPrice(0)
+        setOutputAmount(0)
+        return
+      }
     
-    // Handle for (2) - APPL / USD Pair
-    if ((inputToken === 'APPL' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'APPL')) {
-      console.log(`APPL / USD Activated`)
+      if (!inputToken || !outputToken) {
+        window.alert('Please select token')
+        return
+      }
+
+      if (inputToken === outputToken) {
+        window.alert('Invalid token pair')
+        return
+      }
+
       await loadBalances(amm, tokens, account, dispatch)
-      console.log(`${await amm.token1Balance()} & ${await amm.token2Balance()}`)
-        if (inputToken === 'APPL') {
-          setInputAmount(e.target.value)
-          const _token1Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-          const result = await amm.calculateToken1Swap(_token1Amount)
-          const _token2Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-          setOutputAmount(_token2Amount.toString())
-         } else {
-          setInputAmount(e.target.value)
-          const _token2Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-          const result = await amm.calculateToken2Swap(_token2Amount)
-          const _token1Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-          setOutputAmount(_token1Amount.toString())
-          }
+
+      if (protocol === 1) {
+        setInputAmount(e.target.value)
+        const _token1Amount = ethers.utils.parseUnits(e.target.value, 'ether')
+        const result = await amm.calculateToken1Swap(_token1Amount)
+        const _token2Amount = ethers.utils.formatUnits(result.toString(), 'ether')
+        setOutputAmount(_token2Amount.toString())
+      } else if (protocol === 2) {
+        setInputAmount(e.target.value)
+        const _token2Amount = ethers.utils.parseUnits(e.target.value, 'ether')
+        const result = await amm.calculateToken2Swap(_token2Amount)
+        const _token1Amount = ethers.utils.formatUnits(result.toString(), 'ether')
+        setOutputAmount(_token1Amount.toString())
         }
-  
-    // Handle for (3) - DAPPL / APPL Pair
-    if ((inputToken === 'DAPP' && outputToken === 'APPL') || (inputToken === 'APPL' && outputToken === 'DAPP')) {
-      console.log(`DAPP / APPL Activated`)
-      await loadBalances(amm, tokens, account, dispatch)
-      console.log(`${await amm.token1Balance()} & ${await amm.token2Balance()}`)
-        if (inputToken === 'DAPP') {
-          setInputAmount(e.target.value)
-          const _token1Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-          const result = await amm.calculateToken1Swap(_token1Amount)
-          const _token2Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-          setOutputAmount(_token2Amount.toString())
-         } else {
-          setInputAmount(e.target.value)
-          const _token2Amount = ethers.utils.parseUnits(e.target.value, 'ether')
-          const result = await amm.calculateToken2Swap(_token2Amount)
-          const _token1Amount = ethers.utils.formatUnits(result.toString(), 'ether')
-          setOutputAmount(_token1Amount.toString())
-          }
-        }
-        console.log(`${amm.address}`)
+
   }
 
   const swapHandler = async (e) => {
-    e.preventDefault()
-    setShowAlert(false)
+      e.preventDefault()
+      setShowAlert(false)
 
-    if (inputToken === outputToken) {
-      window.alert('Invalid Token Pair')
-      return
-    }
-    
-    const _inputAmount = ethers.utils.parseUnits(inputAmount, 'ether')
-    await loadTokens(provider, chainId, dispatch);
+      if (inputToken === outputToken) {
+        window.alert('Invalid Token Pair')
+        return
+      }
 
-    // Swap token depending upon which one we're doing...
-    if ((inputToken === 'DAPP' && outputToken === 'USD') 
-      || (inputToken === 'APPL' && outputToken === 'USD') 
-        || (inputToken === 'DAPP' && outputToken === 'APPL')) {
-      await swap(provider, amm, tokens[0], inputToken, outputToken, _inputAmount, dispatch)
-    } else {
-      await swap(provider, amm, tokens[1], inputToken, outputToken, _inputAmount, dispatch)
-    }
+      const _inputAmount = ethers.utils.parseUnits(inputAmount, 'ether')
+      await loadTokens(provider, chainId, dispatch);
+  
+      // Swap Tokens Based Upon Pair Orientation
+      if (protocol === 1) {
+          await swap(provider, amm, tokens[0], inputToken, outputToken, _inputAmount, dispatch)
+        } else if (protocol === 2) {
+          await swap(provider, amm, tokens[1], inputToken, outputToken, _inputAmount, dispatch)
+      }
 
-    await loadBalances(amm, tokens, account, dispatch)
-    await getPrice()
+      await loadBalances(amm, tokens, account, dispatch)
+      await getPrice()
 
-    setShowAlert(true)
+      setShowAlert(true)
   }
 
   const getPrice = async () => {
-    if (inputToken === outputToken) {
-      setPrice(0)
-      return
-    }
+      if (inputToken === outputToken) {
+        setPrice(0)
+        return
+      }
 
-    if (inputToken === outputToken) {
-      window.alert('Invalid token pair')
-      return
-    }
+      if (inputToken === outputToken) {
+        window.alert('Invalid token pair')
+        return
+      }
 
-      console.log(`TEST START`)
-    // Fetch current network's chainId (e.g. hardhat: 31337, kovan: 42)
-    const chainId = await loadNetwork(provider, dispatch)
+      if ((inputToken === 'DAPP' && outputToken === 'USD') ||
+      (inputToken === 'APPL' && outputToken === 'USD') ||
+        (inputToken === 'DAPP' && outputToken === 'APPL'))
+            {
+            setProtocol(1)
+                } else {
+            setProtocol(2)
+                }
+
+      // Fetch Chain ID for Active Network
+      const chainId = await loadNetwork(provider, dispatch)
   
-  if ((inputToken === 'DAPP' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'DAPP')) {
-    await loadTokens(provider, chainId, dispatch);
-    await loadAMM(provider, chainId, dispatch);
-    await loadBalances(amm, tokens, account, dispatch);
-    if (inputToken === 'DAPP') {
-                setPrice((token2 / token1))
-              } else {
-                setPrice((token1 / token2))
-              }
-              console.log(`${price}`)
-            }
-      
-     if ((inputToken === 'APPL' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'APPL')) {
-      await loadAppleUSD(provider, chainId, dispatch);
-      await loadAppleAppleUSD(provider, chainId, dispatch);
-      await loadBalances(amm, tokens, account, dispatch);
-             if (inputToken === 'APPL') {
-              setPrice((token2 / token1))
-            } else {
-              setPrice((token1 / token2))
-            }
-            console.log(`${price}`)
-          }
-      
-     if ((inputToken === 'DAPP' && outputToken === 'APPL') || (inputToken === 'APPL' && outputToken === 'DAPP')) {
-      await loadDAppApple(provider, chainId, dispatch);
-      await loadAppleDappApple(provider, chainId, dispatch);
-      await loadBalances(amm, tokens, account, dispatch);
-            if (inputToken === 'DAPP') {
-              setPrice((token2 / token1))
-            } else {
-              setPrice((token1 / token2))
-            }
-            console.log(`${price}`)
-          }
-    console.log(`TEST END`)
+      if ((inputToken === 'DAPP' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'DAPP')) {
+          await loadTokens(provider, chainId, dispatch);
+          await loadAMM(provider, chainId, dispatch);
+      } else if ((inputToken === 'APPL' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'APPL')) {
+          await loadAppleUSD(provider, chainId, dispatch);
+          await loadAppleAppleUSD(provider, chainId, dispatch);
+      } else if ((inputToken === 'DAPP' && outputToken === 'APPL') || (inputToken === 'APPL' && outputToken === 'DAPP')) {
+          await loadDAppApple(provider, chainId, dispatch);
+          await loadAppleDappApple(provider, chainId, dispatch);
+      }
+
+        await loadBalances(amm, tokens, account, dispatch);
+
+        if (protocol === 1) {
+          setPrice((token2 / token1))
+        } else if (protocol === 2) {
+          setPrice((token1 / token2))
+        }
+
   }
 
-  useEffect(() => {
-    if(inputToken && outputToken) {
-      getPrice()
-    }
-  }, [inputToken, outputToken]);
+    useEffect(() => {
+      if(inputToken && outputToken) {
+        getPrice()
+      }
+    }, [inputToken, outputToken]);
 
   return (
     <div>
@@ -258,7 +204,6 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
                 </DropdownButton>
               </InputGroup>
             </Row>
-
             <Row className='my-4'>
               <div className='d-flex justify-content-between'>
                 <Form.Label><strong>Output:</strong></Form.Label>
@@ -291,14 +236,12 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
                 </DropdownButton>
               </InputGroup>
             </Row>
-
             <Row className='my-3'>
               {isSwapping ? (
                 <Spinner animation="border" style={{ display: 'block', margin: '0 auto' }} />
               ): (
                 <Button type='submit'>Swap</Button>
               )}
-
               <Form.Text muted>
               Exchange Rate: {
                       inputToken === 'DAPP' && outputToken === 'USD' ? (
@@ -317,9 +260,7 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
                   }
               </Form.Text>
             </Row>
-
           </Form>
-
         ) : (
           <p
             className='d-flex justify-content-center align-items-center'
@@ -354,7 +295,6 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
       ) : (
         <></>
       )}
-
     </div>
   );
 }
