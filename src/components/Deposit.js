@@ -46,6 +46,13 @@ const Deposit = () => {
   }
 
   const amountHandler = async (e) => {
+
+    if (e.target.value == 0) {
+      setToken1Amount(0)
+      setToken2Amount(0)
+      return
+    }
+
     if (e.target.id === 'token1') {
       setToken1Amount(e.target.value)
 

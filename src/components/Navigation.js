@@ -39,7 +39,7 @@ const Navigation = () => {
         src={apple}
         width="60"
         height="60"
-        className="d-inline-block align-top align-middle mx-3 centerText"
+        className="d-inline-block align-top align-middle mx-3 centerText rounded-circle"
         style={{textAlign: "center"}}
 
       />

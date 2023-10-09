@@ -64,6 +64,12 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
       return
     }
 
+    if (e.target.value == 0) {
+      setPrice(0)
+      setOutputAmount(0)
+      return
+    }
+
     // Handle for (1) - DAPP / USD Pair
     if ((inputToken === 'DAPP' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'DAPP')) {
       console.log(`DAPP / USD Activated`)
