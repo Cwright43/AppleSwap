@@ -91,8 +91,8 @@ export const loadDAppApple = async (provider, chainId, dispatch) => {
 // --------------------------------------//
 
 // Load (DAPP / USD) Address
-export const loadAMM = async (provider, chainId, dispatch) => {
-    const amm = new ethers.Contract(config[chainId].amm.address, AMM_ABI, provider)
+export const loadAppleDappUSD = async (provider, chainId, dispatch) => {
+    const amm = new ethers.Contract(config[chainId].appleDappUSD.address, AMM_ABI, provider)
 
     dispatch(setContract(amm))
 

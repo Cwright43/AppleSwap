@@ -16,7 +16,7 @@ import {
   swap,
   loadNetwork,
   loadTokens,
-  loadAMM,
+  loadAppleDappUSD,
   loadBalances,
   loadAppleUSD,
   loadDAppApple,
@@ -34,6 +34,7 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
       const [price, setPrice] = useState(0)
       const [protocol, setProtocol] = useState(0)
       const [showAlert, setShowAlert] = useState(false)
+      const [exchangeRate, setExchangeRate] = useState(0)
 
     // Loading Contract Addresses
       const provider = useSelector(state => state.provider.connection)
@@ -58,6 +59,7 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
       if (e.target.value == 0) {
         setPrice(0)
         setOutputAmount(0)
+        setExchangeRate(0)
         return
       }
     
@@ -79,12 +81,14 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
         const result = await amm.calculateToken1Swap(_token1Amount)
         const _token2Amount = ethers.utils.formatUnits(result.toString(), 'ether')
         setOutputAmount(_token2Amount.toString())
+        setExchangeRate((_token2Amount/_token1Amount) * 10e17)
       } else if (protocol === 2) {
         setInputAmount(e.target.value)
         const _token2Amount = ethers.utils.parseUnits(e.target.value, 'ether')
         const result = await amm.calculateToken2Swap(_token2Amount)
         const _token1Amount = ethers.utils.formatUnits(result.toString(), 'ether')
         setOutputAmount(_token1Amount.toString())
+        setExchangeRate((_token1Amount/_token2Amount) * 10e17)
         }
 
   }
@@ -139,7 +143,7 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
   
       if ((inputToken === 'DAPP' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'DAPP')) {
           await loadTokens(provider, chainId, dispatch);
-          await loadAMM(provider, chainId, dispatch);
+          await loadAppleDappUSD(provider, chainId, dispatch);
       } else if ((inputToken === 'APPL' && outputToken === 'USD') || (inputToken === 'USD' && outputToken === 'APPL')) {
           await loadAppleUSD(provider, chainId, dispatch);
           await loadAppleAppleUSD(provider, chainId, dispatch);
@@ -155,7 +159,6 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
         } else if (protocol === 2) {
           setPrice((token1 / token2))
         }
-
   }
 
     useEffect(() => {
@@ -243,21 +246,7 @@ const Swap = ({ dappAccountBalance, usdAccountBalance, appleAccountBalance, rate
                 <Button type='submit'>Swap</Button>
               )}
               <Form.Text muted>
-              Exchange Rate: {
-                      inputToken === 'DAPP' && outputToken === 'USD' ? (
-                        parseFloat(rate1).toFixed(4) 
-                    ) : inputToken === 'USD' && outputToken === 'DAPP' ? (
-                        parseFloat((1 / rate1)).toFixed(4)
-                     )  : inputToken === 'APPL' && outputToken === 'USD' ? (
-                          parseFloat(rate2).toFixed(4) 
-                      ) : inputToken === 'USD' && outputToken === 'APPL' ? (
-                          parseFloat((1 / rate2)).toFixed(4)
-                       ) : inputToken === 'DAPP' && outputToken === 'APPL' ? (
-                            parseFloat(rate3).toFixed(4) 
-                        ) : inputToken === 'APPL' && outputToken === 'DAPP' ? (
-                            parseFloat((1 / rate3)).toFixed(4)
-                    ) : 0
-                  }
+               <p>Exchange Rate: {exchangeRate}</p>
               </Form.Text>
             </Row>
           </Form>

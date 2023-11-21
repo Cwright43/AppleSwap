@@ -31,9 +31,6 @@ import TokenPair2 from '../TokenPair2.png';
 import TokenPair3 from '../TokenPair3.png';
 import backgroundimage from '../AppleBackground.png';
 
-import wethIcon from '../WETH.png';
-import daiIcon from '../DAI.png';
-
 // ABIs: Import your contract ABIs here
 import AMM_ABI from '../abis/AMM.json'
 import TOKEN_ABI from '../abis/Token.json'
@@ -46,7 +43,7 @@ import {
   loadNetwork,
   loadAccount,
   loadTokens,
-  loadAMM,
+  loadAppleDappUSD,
 } from '../store/interactions'
 
 function App() {
@@ -57,12 +54,8 @@ function App() {
     const [apple, setApple] = useState(null)
     
   // Set Address for DAPP / USD Pool
-    const [amm, setAMM] = useState(null)
-
-  // Set Address for APPL / USD Pool
+    const [appleDappUSD, setAppleDappUSD] = useState(null)
     const [appleAppleUSD, setAppleAppleUSD] = useState(null)
-    
-  // Set Address for DAPP / APPL Pool
     const [appleDappApple, setAppleDappApple] = useState(null)
 
   // Set User Account
@@ -95,13 +88,6 @@ function App() {
     const [open2, setOpen2] = useState(false);
     const [open3, setOpen3] = useState(false);
 
-  // Call active token balances dynamically
-    const token1 = useSelector(state => state.amm.token1)
-    const token2 = useSelector(state => state.amm.token2)
-
-  // Set Chain ID for Network
-    const chainId = useSelector(state => state.provider.chainId)
-
     const dispatch = useDispatch()
 
   const loadBlockchainData = async () => {
@@ -128,7 +114,7 @@ function App() {
 
     // Initiate contracts
       await loadTokens(provider, chainId, dispatch)
-      await loadAMM(provider, chainId, dispatch)
+      await loadAppleDappUSD(provider, chainId, dispatch)
 
     // Load tokens
       let usd = new ethers.Contract(config[1].usd.address, TOKEN_ABI, provider)
@@ -154,8 +140,8 @@ function App() {
       setAppleAccountBalance(appleAccountBalance)
     
     // Load Dapp DAPP / USD Pool Address
-      const amm = new ethers.Contract(config[1].amm.address, AMM_ABI, provider)
-      setAMM(amm)
+      const appleDappUSD = new ethers.Contract(config[1].appleDappUSD.address, AMM_ABI, provider)
+      setAppleDappUSD(appleDappUSD)
     
     // Load Dapp APPL / USD Pool Address
       const appleAppleUSD = new ethers.Contract(config[1].appleAppleUSD.address, AMM_ABI, provider)
@@ -166,11 +152,11 @@ function App() {
       setAppleDappApple(appleDappApple)
           
     // Load Balances for DAPP / USD
-      let balance1 = await dapp.balanceOf(amm.address)
+      let balance1 = await dapp.balanceOf(appleDappUSD.address)
       balance1 = ethers.utils.formatUnits(balance1, 18)
       setBalance1(balance1)
       
-      let balance2 = await usd.balanceOf(amm.address)
+      let balance2 = await usd.balanceOf(appleDappUSD.address)
       balance2 = ethers.utils.formatUnits(balance2, 18)
       setBalance2(balance2)
     
