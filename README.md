@@ -1,13 +1,5 @@
-# Sample Hardhat Project
+# Apple Swap - Decentralized Cryptocurrency Exchange
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+Apple Swap is the second of the two DEX websites used for the purpose of creating additional resources and reference points to be employed into the Turbo Shell DEX Aggregator. Apple Swap features an additional set of three (3) unique liquidity pools reserved for the same repertoire of mock-tokens, being DAPP, APPL, and USD.
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
-```
+As with Dapp Swap, Apple Swap allows for all of the same basic exchange features and allows the user to adjust the rate values as-needed for subsequent testing purposes.
