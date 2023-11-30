@@ -195,7 +195,7 @@ function App() {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       width: '100vw',
-      height: '100vh'
+      height: '125vh'
       }}>
     <Container>
       <HashRouter>

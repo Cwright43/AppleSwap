@@ -1,23 +1,22 @@
 {
-
   "1": {
     "dapp": {
-      "address": "0x7A5EC257391817ef241ef8451642cC6b222d4f8C"
+      "address": "0x9A86494Ba45eE1f9EEed9cFC0894f6C5d13a1F0b"
     },
     "usd": {
-      "address": "0x90E75f390332356426B60FB440DF23f860F6A113"
+      "address": "0xC0340c0831Aa40A0791cF8C3Ab4287EB0a9705d8"
     },
     "apple": {
-      "address": "0x59c7D03d2E9893FB7bAa89dA50a9452e1e9B8b90"
+      "address": "0xFf658343244c0475b9305859F1b7CDAB9784762f"
     },
     "appleDappUSD": {
-      "address": "0x8D75F9F7f4F4C4eFAB9402261bC864f21DF0c649"
+      "address": "0x4432a6DcfAEAB227673B43C30c6fEf40eaBD5D30"
     },
     "appleAppleUSD": {
-      "address": "0xFcCa971FE9Ee20C1Cf22596E700aA993D8fD19c5"
+      "address": "0x18eb8AF587dcd7E4F575040F6D800a6B5Cef6CAf"
     },
     "appleDappApple": {
-      "address": "0x04F75a27cE2FDC591C71a88f1EcaC7e5Ce44f5Fc"
+      "address": "0x7c02b58029beeA7c1FcC872803dC9818f57A0E61"
     }
   }
 }
